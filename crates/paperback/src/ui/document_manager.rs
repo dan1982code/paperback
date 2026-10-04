@@ -124,6 +124,8 @@ pub struct DocumentManager {
 	last_audio_seek_position: Cell<Option<i64>>,
 	last_focus_in_text: Cell<bool>,
 	recently_closed: Vec<PathBuf>,
+	/// Hands out an id per OCR job, so a worker whose tab has been closed is recognisable as stale rather than mistaken for one on a reopened tab.
+	next_job_id: Cell<u64>,
 }
 
 impl DocumentManager {
@@ -144,6 +146,7 @@ impl DocumentManager {
 			last_audio_seek_position: Cell::new(None),
 			last_focus_in_text: Cell::new(true),
 			recently_closed: Vec::new(),
+			next_job_id: Cell::new(0),
 		}
 	}
 
